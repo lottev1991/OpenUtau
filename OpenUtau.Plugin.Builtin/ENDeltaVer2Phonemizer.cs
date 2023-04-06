@@ -516,6 +516,9 @@ namespace OpenUtau.Plugin.Builtin
                                         i++;
                                     }
                                 }
+                            } else {
+                                TryAddPhoneme(phonemes, ending.tone, $"{cc[0 + 1]} -", $"{cc[0 + 1]}-");
+                                i++;
                             }
                         }
                     }
