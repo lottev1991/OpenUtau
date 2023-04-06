@@ -517,7 +517,11 @@ namespace OpenUtau.Plugin.Builtin
                                     }
                                 }
                             } else {
-                                TryAddPhoneme(phonemes, ending.tone, $"{cc[0 + 1]} -", $"{cc[0 + 1]}-");
+                                if (affricates.Contains(cc[0 + 1])) {
+                                    TryAddPhoneme(phonemes, ending.tone, $"{cc[0 + 1]} -", $"{cc[0 + 1]}-", $"{cc[0 + 1]}");
+                                } else {
+                                    TryAddPhoneme(phonemes, ending.tone, $"{cc[0 + 1]} -", $"{cc[0 + 1]}-");
+                                }
                                 i++;
                             }
                         }
