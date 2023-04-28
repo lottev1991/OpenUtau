@@ -83,7 +83,7 @@ namespace OpenUtau.Plugin.Builtin {
                     }
                     // try RCC
                     for (var i = cc.Length; i > 1; i--) {
-                        if (TryAddPhoneme(phonemes, syllable.tone, $"-{string.Join("", cc.Take(i))}")) {
+                        if (TryAddPhoneme(phonemes, syllable.tone, $"-{string.Join("", cc.Take(i))}", $"-{string.Join("", cc.Take(i))}", $"-{cc[0]}", ValidateAlias($"-{cc[0]}"))) {
                             firstC = i;
                             break;
                         }
@@ -203,7 +203,8 @@ namespace OpenUtau.Plugin.Builtin {
                 var cc1 = $"{string.Join("", cc.Skip(i))}";
                 var ccv = string.Join("", cc.Skip(i)) + v;
                 var ucv = $"_{cc.Last()}{v}";
-                if (!syllable.IsStartingCVWithMoreThanOneConsonant) {
+                var rccv = $"-{string.Join("", cc)}{v}";
+                if (!HasOto(rccv, syllable.vowelTone) && !HasOto(ValidateAlias(rccv), syllable.vowelTone)) {
                     if (!HasOto(cc1, syllable.tone)) {
                         cc1 = ValidateAlias(cc1);
                     }
@@ -300,6 +301,12 @@ namespace OpenUtau.Plugin.Builtin {
             return phonemes;
         }
         protected override string ValidateAlias(string alias) {
+            foreach (var consonant in new[] { "y" }) {
+                alias = alias.Replace("y", "i");
+            }
+            foreach (var consonant in new[] { "w" }) {
+                alias = alias.Replace("w", "u");
+            }
             foreach (var consonant in new[] { "I" }) {
                 alias = alias.Replace("I", "y");
             }
