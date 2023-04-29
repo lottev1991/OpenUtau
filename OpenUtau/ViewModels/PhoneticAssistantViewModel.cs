@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using OpenUtau.Core.G2p;
@@ -25,8 +25,10 @@ namespace OpenUtau.App.ViewModels {
         private readonly List<G2pOption> g2ps = new List<G2pOption>() {
             new G2pOption(typeof(ArpabetG2p)),
             new G2pOption(typeof(FrenchG2p)),
+            new G2pOption(typeof(ItalianG2p)),
             new G2pOption(typeof(PortugueseG2p)),
             new G2pOption(typeof(RussianG2p)),
+            new G2pOption(typeof(SpanishG2p)),
         };
 
         private Api.G2pPack? g2p;
