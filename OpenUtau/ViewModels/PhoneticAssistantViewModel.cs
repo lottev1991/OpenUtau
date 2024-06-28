@@ -27,6 +27,8 @@ namespace OpenUtau.App.ViewModels {
         private readonly List<G2pOption> g2ps = new List<G2pOption>() {
             new G2pOption(typeof(ArpabetG2p)),
             new G2pOption(typeof(ArpabetPlusG2p)),
+            new G2pOption(typeof(ClassicalLatinG2p)),
+            new G2pOption(typeof(EcclesiasticalLatinG2p)),
             new G2pOption(typeof(FrenchG2p)),
             new G2pOption(typeof(GermanG2p)),
             new G2pOption(typeof(ItalianG2p)),
