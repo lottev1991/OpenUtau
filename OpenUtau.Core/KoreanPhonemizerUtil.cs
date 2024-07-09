@@ -9,6 +9,7 @@ using OpenUtau.Classic;
 using Serilog;
 using static OpenUtau.Api.Phonemizer;
 using OpenUtau.Api;
+using System.Text;
 
 namespace OpenUtau.Core {
     /// <summary>
@@ -1176,7 +1177,7 @@ namespace OpenUtau.Core {
             iniSetting = defaultIniSetting;
             filePath = Path.Combine(singer.Location, iniFileName);
             try {
-                using (StreamReader reader = new StreamReader(filePath, singer.TextFileEncoding)){
+                using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8)){
                     List<IniBlock> blocks = Ini.ReadBlocks(reader, filePath, @"\[\w+\]");
                     if (blocks.Count == 0) {
                         throw new IOException($"[{iniFileName}] is empty.");
