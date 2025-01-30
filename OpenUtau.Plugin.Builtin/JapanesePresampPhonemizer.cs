@@ -227,7 +227,7 @@ namespace OpenUtau.Plugin.Builtin {
                     }
                 }
             }
-            result.Add(new Phoneme() { phoneme = currentLyric, index = 0 });
+            result.Add(new Phoneme() { phoneme = currentLyric, index = 0, expressions = new List<PhonemeExpression>() });
 
             // Insert "- C"
             if (string.IsNullOrEmpty(note.phoneticHint)
@@ -256,6 +256,9 @@ namespace OpenUtau.Plugin.Builtin {
                     });
                     if (color != null) {
                         result[0].expressions.Add(new PhonemeExpression() { abbr = Core.Format.Ustx.CLR, value = (int)color });
+                    }
+                    if (presamp.CFlags.Contains("p0") || presamp.CFlags.Contains("P0")) {
+                        result[0].expressions.Add(new PhonemeExpression() { abbr = Core.Format.Ustx.NORM, value = 0 });
                     }
                 }
             }
