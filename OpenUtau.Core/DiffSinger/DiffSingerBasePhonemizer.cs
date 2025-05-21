@@ -24,7 +24,7 @@ namespace OpenUtau.Core.DiffSinger
         ulong durationHash;
         InferenceSession linguisticModel;
         InferenceSession durationModel;
-        IG2p g2p;
+        public IG2p g2p;
         Dictionary<string, int> phonemeTokens;
         DiffSingerSpeakerEmbedManager speakerEmbedManager;
 
@@ -151,28 +151,14 @@ namespace OpenUtau.Core.DiffSinger
             return String.Empty;
         }
 
-        string[] ParsePhoneticHint(string phoneticHint) {
+        public string[] ParsePhoneticHint(string phoneticHint) {
             return phoneticHint.Split()
                 .Select(ValidatePhoneme)
                 .Where(s => !String.IsNullOrEmpty(s)) // skip invalid symbols.
                 .ToArray();
         }
 
-        /// <summary>
-        /// Check if lyrics are all uppercase.
-        /// If true, do not parse as all lowercase.
-        /// If false (e.g. only some letters are uppercase but not all, or all letters are already lowercase), parse as lowercase.
-        /// </summary>
-        /// <param name="IsAllUpper()"></param>
-        bool IsAllUpper(string lyric) {
-            for (int i = 0; i < lyric.Length; i++) {
-                if (char.IsLetter(lyric[i]) && !char.IsUpper(lyric[i]))
-                    return false;
-            }
-            return true;
-        }
-
-        string[] GetSymbols(Note note) {
+        protected virtual string[] GetSymbols(Note note) {
             //priority:
             //1. phonetic hint
             //2. query from g2p dictionary
@@ -186,10 +172,6 @@ namespace OpenUtau.Core.DiffSinger
             var g2presult = g2p.Query(note.lyric)
                 ?? g2p.Query(note.lyric.ToLowerInvariant());
             if(g2presult != null) {
-                if (!IsAllUpper(note.lyric)) {
-                    g2presult = g2p.Query(note.lyric.ToLowerInvariant());
-                    return g2presult;
-                }
                 return g2presult;
             }
             //not found in g2p dictionary, treat lyric as phonetic hint
