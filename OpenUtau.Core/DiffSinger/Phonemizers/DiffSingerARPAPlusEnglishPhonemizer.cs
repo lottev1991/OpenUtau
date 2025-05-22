@@ -28,6 +28,15 @@ namespace OpenUtau.Core.DiffSinger {
             "k", "l", "m", "n", "ng", "p", "q", "r", "s", "sh", "t",
             "th", "tr", "v", "w", "y", "z", "zh"
         };
+
+        protected override string[] GetSymbols(Note note) {
+            parseUpperAsLower = true;
+            if (note.lyric == "SP" || note.lyric == "AP") {
+                parseUpperAsLower = false;
+            }
+            return base.GetSymbols(note);
+        }
+
         public override Result Process(Note[] notes, Note? prev, Note? next, Note? prevNeighbour, Note? nextNeighbour, Note[] prevs) {
 
             if (notes[0].lyric == "-") {

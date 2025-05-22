@@ -20,23 +20,11 @@ namespace OpenUtau.Core.DiffSinger
         };
 
         protected override string[] GetSymbols(Note note) {
-            if (!string.IsNullOrEmpty(note.phoneticHint)) {
-                return ParsePhoneticHint(note.phoneticHint);
+            parseUpperAsLower = true;
+            if (note.lyric == "SP" || note.lyric == "AP") {
+                parseUpperAsLower = false;
             }
-            var g2presult = g2p.Query(note.lyric)
-                ?? g2p.Query(note.lyric.ToLowerInvariant());
-            if (g2presult != null) {
-                if (note.lyric != "SP" && note.lyric != "AP") {
-                    g2presult = g2p.Query(note.lyric.ToLowerInvariant());
-                    return g2presult;
-                }
-                return g2presult;
-            }
-            var lyricSplited = ParsePhoneticHint(note.lyric);
-            if (lyricSplited.Length > 0) {
-                return lyricSplited;
-            }
-            return new string[] { };
+            return base.GetSymbols(note);
         }
     }
 }
