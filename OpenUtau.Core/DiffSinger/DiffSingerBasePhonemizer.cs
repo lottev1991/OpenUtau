@@ -24,7 +24,7 @@ namespace OpenUtau.Core.DiffSinger
         ulong durationHash;
         InferenceSession linguisticModel;
         InferenceSession durationModel;
-        IG2p g2p;
+        public IG2p g2p;
         Dictionary<string, int> phonemeTokens;
         DiffSingerSpeakerEmbedManager speakerEmbedManager;
 
@@ -130,6 +130,7 @@ namespace OpenUtau.Core.DiffSinger
                     break;
                 }
             }
+            
             //SP and AP should always be vowel
             g2pBuilder.AddSymbol("SP", true);
             g2pBuilder.AddSymbol("AP", true);

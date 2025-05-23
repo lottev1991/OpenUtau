@@ -22,9 +22,9 @@ namespace OpenUtau.Core.DiffSinger
 
         protected override string[] GetSymbols(Note note) {
             parseUpperAsLower = true;
-            if (note.lyric == "SP" || note.lyric == "AP") {
+            //if (note.lyric == "SP" || note.lyric == "AP") {
                 parseUpperAsLower = false;
-            }
+            //}
             return base.GetSymbols(note);
         }
     }
