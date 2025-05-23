@@ -30,7 +30,7 @@ namespace OpenUtau.Core.DiffSinger
 
         string defaultPause = "SP";
         protected virtual string GetDictionaryName()=>"dsdict.yaml";
-        public virtual string GetLangCode()=>String.Empty;//The language code of the language the phonemizer is made for
+        protected virtual string GetLangCode()=>String.Empty;//The language code of the language the phonemizer is made for
 
         private bool _singerLoaded;
 
