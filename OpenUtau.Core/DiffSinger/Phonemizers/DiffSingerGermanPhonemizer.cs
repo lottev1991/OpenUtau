@@ -1,4 +1,4 @@
-﻿using OpenUtau.Api;
+using OpenUtau.Api;
 using OpenUtau.Core.G2p;
 
 namespace OpenUtau.Core.DiffSinger
@@ -17,13 +17,5 @@ namespace OpenUtau.Core.DiffSinger
             "b", "cc", "ch", "d", "dh", "f", "g", "hh", "jh", "k", "l", "m",
             "n", "ng", "p", "pf", "q", "r", "rr", "s", "sh", "t", "th", "ts", "v", "w", "x", "y", "z", "zh"
         };
-
-        protected override string[] GetSymbols(Note note) {
-            parseUpperAsLower = true;
-            if (note.lyric == "SP" || note.lyric == "AP") {
-                parseUpperAsLower = false;
-            }
-            return base.GetSymbols(note);
-        }
     }
 }

@@ -24,7 +24,7 @@ namespace OpenUtau.Core.DiffSinger
         ulong durationHash;
         InferenceSession linguisticModel;
         InferenceSession durationModel;
-        IG2p g2p;
+        public IG2p g2p;
         Dictionary<string, int> phonemeTokens;
         DiffSingerSpeakerEmbedManager speakerEmbedManager;
 
@@ -33,8 +33,6 @@ namespace OpenUtau.Core.DiffSinger
         protected virtual string GetLangCode()=>String.Empty;//The language code of the language the phonemizer is made for
 
         private bool _singerLoaded;
-
-        public bool parseUpperAsLower = false;
 
         public override void SetSinger(USinger singer) {
             if (_singerLoaded && singer == this.singer) return;
@@ -153,7 +151,7 @@ namespace OpenUtau.Core.DiffSinger
             return String.Empty;
         }
 
-        string[] ParsePhoneticHint(string phoneticHint) {
+        public string[] ParsePhoneticHint(string phoneticHint) {
             return phoneticHint.Split()
                 .Select(ValidatePhoneme)
                 .Where(s => !String.IsNullOrEmpty(s)) // skip invalid symbols.
@@ -174,10 +172,6 @@ namespace OpenUtau.Core.DiffSinger
             var g2presult = g2p.Query(note.lyric)
                 ?? g2p.Query(note.lyric.ToLowerInvariant());
             if(g2presult != null) {
-                if (parseUpperAsLower) {
-                    g2presult = g2p.Query(note.lyric.ToLowerInvariant());
-                    return g2presult;
-                }
                 return g2presult;
             }
             //not found in g2p dictionary, treat lyric as phonetic hint
