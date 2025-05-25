@@ -42,6 +42,8 @@ namespace OpenUtau.Core.DiffSinger
             return phonemeSymbols.ContainsKey(phoneme);
         }
 
+
+
         protected override IG2p LoadG2p(string rootPath, bool useLangId = false) {
             //Each phonemizer has a delicated dictionary name, such as dsdict-en.yaml, dsdict-ru.yaml.
             //If this dictionary exists, load it.

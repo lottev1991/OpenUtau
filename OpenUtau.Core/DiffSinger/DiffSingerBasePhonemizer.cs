@@ -34,6 +34,8 @@ namespace OpenUtau.Core.DiffSinger
 
         private bool _singerLoaded;
 
+        public bool parseUpperAsLower = false;
+
         public override void SetSinger(USinger singer) {
             if (_singerLoaded && singer == this.singer) return;
             try {
@@ -158,21 +160,7 @@ namespace OpenUtau.Core.DiffSinger
                 .ToArray();
         }
 
-        /// <summary>
-        /// Check if lyrics are all uppercase.
-        /// If true, do not parse as all lowercase.
-        /// If false (e.g. only some letters are uppercase but not all, or all letters are already lowercase), parse as lowercase.
-        /// </summary>
-        /// <param name="IsAllUpper()"></param>
-        bool IsAllUpper(string lyric) {
-            for (int i = 0; i < lyric.Length; i++) {
-                if (char.IsLetter(lyric[i]) && !char.IsUpper(lyric[i]))
-                    return false;
-            }
-            return true;
-        }
-
-        string[] GetSymbols(Note note) {
+        protected virtual string[] GetSymbols(Note note) {
             //priority:
             //1. phonetic hint
             //2. query from g2p dictionary
@@ -186,8 +174,8 @@ namespace OpenUtau.Core.DiffSinger
             var g2presult = g2p.Query(note.lyric)
                 ?? g2p.Query(note.lyric.ToLowerInvariant());
             if(g2presult != null) {
-                if (!IsAllUpper(note.lyric)) {
-                    g2presult = g2p.Query(note.lyric.ToLowerInvariant());
+                if (parseUpperAsLower) {
+                    g2presult = g2p.Query(note.lyric.ToLowerInvariant() ?? note.lyric);
                     return g2presult;
                 }
                 return g2presult;
