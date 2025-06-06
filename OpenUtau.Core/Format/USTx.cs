@@ -8,8 +8,10 @@ using OpenUtau.Core.Ustx;
 using OpenUtau.Core.Util;
 using Serilog;
 
-namespace OpenUtau.Core.Format {
-    public class Ustx {
+namespace OpenUtau.Core.Format
+{
+    public class Ustx
+    {
         public static readonly Version kUstxVersion = new Version(0, 7);
 
         public const string DYN = "dyn";
@@ -37,7 +39,8 @@ namespace OpenUtau.Core.Format {
 
         public static readonly string[] required = { DYN, PITD, CLR, ENG, VEL, VOL, ATK, DEC };
 
-        public static void AddDefaultExpressions(UProject project) {
+        public static void AddDefaultExpressions(UProject project)
+        {
             project.RegisterExpression(new UExpressionDescriptor("dynamics (curve)", DYN, -240, 120, 0) { type = UExpressionType.Curve });
             project.RegisterExpression(new UExpressionDescriptor("pitch deviation (curve)", PITD, -1200, 1200, 0) { type = UExpressionType.Curve });
             project.RegisterExpression(new UExpressionDescriptor("voice color", CLR, false, new string[0]));
@@ -62,25 +65,32 @@ namespace OpenUtau.Core.Format {
             project.RegisterExpression(new UExpressionDescriptor("voicing (curve)", VOIC, 0, 100, 100) { type = UExpressionType.Curve });
 
             string message = string.Empty;
-            if (ValidateExpression(project, "g", GEN)) {
+            if (ValidateExpression(project, "g", GEN))
+            {
                 message += $"\ng flag -> gender";
             }
-            if (ValidateExpression(project, "B", BRE)) {
+            if (ValidateExpression(project, "B", BRE))
+            {
                 message += $"\nB flag -> {BRE}";
             }
-            if (ValidateExpression(project, "H", LPF)) {
+            if (ValidateExpression(project, "H", LPF))
+            {
                 message += $"\nH flag-> {LPF}";
             }
-            if (ValidateExpression(project, "P", NORM)) {
+            if (ValidateExpression(project, "P", NORM))
+            {
                 message += $"\nP flag-> normalize";
             }
-            if (message != string.Empty) {
+            if (message != string.Empty)
+            {
                 var e = new MessageCustomizableException("Expressions have been merged due to duplicate flags", $"<translate:errors.expression.marge>:{message}", new Exception(), false);
                 DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));
             }
         }
-        private static bool ValidateExpression(UProject project, string flag, string abbr) {
-            if (project.expressions.Any(e => e.Value.flag == flag && e.Value.abbr != abbr)) {
+        private static bool ValidateExpression(UProject project, string flag, string abbr)
+        {
+            if (project.expressions.Any(e => e.Value.flag == flag && e.Value.abbr != abbr))
+            {
                 var oldExp = project.expressions.First(e => e.Value.flag == flag && e.Value.abbr != abbr);
                 project.MargeExpression(oldExp.Value.abbr, abbr);
                 return true;
@@ -88,14 +98,17 @@ namespace OpenUtau.Core.Format {
             return false;
         }
 
-        public static UProject Create() {
+        public static UProject Create()
+        {
             UProject project = new UProject() { Saved = false };
             AddDefaultExpressions(project);
             return project;
         }
 
-        public static void Save(string filePath, UProject project) {
-            try {
+        public static void Save(string filePath, UProject project)
+        {
+            try
+            {
                 project.ustxVersion = kUstxVersion;
                 project.FilePath = filePath;
                 project.BeforeSave();
@@ -111,20 +124,25 @@ namespace OpenUtau.Core.Format {
             }
         }
 
-        public static void AutoSave(string filePath, UProject project) {
-            try {
+        public static void AutoSave(string filePath, UProject project)
+        {
+            try
+            {
                 project.ustxVersion = kUstxVersion;
                 project.BeforeSave();
                 File.WriteAllText(filePath, Yaml.DefaultSerializer.Serialize(project), Encoding.UTF8);
                 project.AfterSave();
                 Preferences.Default.RecoveryPath = filePath;
                 Preferences.Save();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Log.Error(ex, $"Failed to autosave: {filePath}");
             }
         }
 
-        public static UProject Load(string filePath) {
+        public static UProject Load(string filePath)
+        {
             string text = File.ReadAllText(filePath, Encoding.UTF8);
             UProject project = Yaml.DefaultDeserializer.Deserialize<UProject>(text);
             AddDefaultExpressions(project);
@@ -135,11 +153,14 @@ namespace OpenUtau.Core.Format {
             if (project.ustxVersion > kUstxVersion) {
                 throw new MessageCustomizableException($"Project file is newer than software: {filePath}", $"<translate:errors.failed.opennewerproject>:\n{filePath}", new FileFormatException("Project file is newer than software."));
             }
-            if (project.ustxVersion < kUstxVersion) {
+            if (project.ustxVersion < kUstxVersion)
+            {
                 Log.Information($"Upgrading project from {project.ustxVersion} to {kUstxVersion}");
             }
-            if (project.ustxVersion < new Version(0, 4)) {
-                if (project.expressions.TryGetValue("acc", out var exp) && exp.name == "accent") {
+            if (project.ustxVersion < new Version(0, 4))
+            {
+                if (project.expressions.TryGetValue("acc", out var exp) && exp.name == "accent")
+                {
                     project.expressions.Remove("acc");
                     exp.abbr = ATK;
                     exp.name = "attack";
@@ -155,7 +176,8 @@ namespace OpenUtau.Core.Format {
                     project.ValidateFull();
                 }
             }
-            if (project.ustxVersion < new Version(0, 5)) {
+            if (project.ustxVersion < new Version(0, 5))
+            {
                 project.parts
                     .Where(part => part is UVoicePart)
                     .Select(part => part as UVoicePart)
@@ -165,17 +187,21 @@ namespace OpenUtau.Core.Format {
                     .ForEach(note => note.lyric = note.lyric.Replace("...", "+"));
                 project.ValidateFull();
             }
-            if (project.ustxVersion < new Version(0, 6)) {
+            if (project.ustxVersion < new Version(0, 6))
+            {
 #pragma warning disable CS0612 // Type or member is obsolete
                 project.timeSignatures = new List<UTimeSignature> { new UTimeSignature(0, project.beatPerBar, project.beatUnit) };
                 project.tempos = new List<UTempo> { new UTempo(0, project.bpm) };
 #pragma warning restore CS0612 // Type or member is obsolete
                 project.ValidateFull();
             }
-            if (project.ustxVersion < new Version(0, 7)) {
+            if (project.ustxVersion < new Version(0, 7))
+            {
                 var expSelectors = new UProject().expSelectors;
-                if (project.expSelectors.Length < expSelectors.Length) {
-                    for (int i = 0; i < project.expSelectors.Length; i++) {
+                if (project.expSelectors.Length < expSelectors.Length)
+                {
+                    for (int i = 0; i < project.expSelectors.Length; i++)
+                    {
                         expSelectors[i] = project.expSelectors[i];
                     }
                     project.expSelectors = expSelectors;
