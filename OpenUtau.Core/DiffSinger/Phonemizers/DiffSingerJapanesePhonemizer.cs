@@ -9,6 +9,8 @@ namespace OpenUtau.Core.DiffSinger {
 
         public override string GetLangCode() => "ja";
 
+        //IG2p? g2p;
+
         protected override string[] Romanize(IEnumerable<string> lyrics) {
             var lyricsArray = lyrics.ToArray();
             var kanaLyrics = lyricsArray
@@ -20,10 +22,13 @@ namespace OpenUtau.Core.DiffSinger {
             }
             var kanaIndex = 0;
             for (int i = 0; i < lyricsArray.Length; i++) {
-                if (Kana.Kana.IsKana(lyricsArray[i])) {
-                    lyricsArray[i] = kanaResult[kanaIndex];
-                    kanaIndex++;
-                }
+                //if (g2p != null) {
+                    if (Kana.Kana.IsKana(lyricsArray[i])) {
+                        lyricsArray[i] = kanaResult[kanaIndex];
+                        kanaIndex++;
+                    }
+                //}
+                
             }
             return lyricsArray;
         }

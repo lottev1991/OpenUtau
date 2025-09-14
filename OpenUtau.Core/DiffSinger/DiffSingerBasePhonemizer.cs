@@ -138,11 +138,12 @@ namespace OpenUtau.Core.DiffSinger
         //Check if the phoneme is supported. If unsupported, return an empty string.
         //And apply language prefix to phoneme
         string ValidatePhoneme(string phoneme){
-            if(g2p.IsValidSymbol(phoneme) && phonemeTokens.ContainsKey(phoneme)){
+            var langCode = GetLangCode();
+            if (g2p.IsValidSymbol(phoneme) && phonemeTokens.ContainsKey(phoneme)){
                 return phoneme;
             }
-            var langCode = GetLangCode();
-            if(langCode != String.Empty){
+
+            if (langCode != String.Empty){
                 var phonemeWithLanguage = langCode + "/" + phoneme;
                 if(g2p.IsValidSymbol(phonemeWithLanguage)  && phonemeTokens.ContainsKey(phonemeWithLanguage)){
                     return phonemeWithLanguage;

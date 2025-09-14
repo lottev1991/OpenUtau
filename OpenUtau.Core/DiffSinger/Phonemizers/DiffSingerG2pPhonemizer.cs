@@ -66,7 +66,7 @@ namespace OpenUtau.Core.DiffSinger
                                 phonemeSymbols[symbol.symbol.Trim()] = true;
                             }
                         }
-                        Log.Error("Loaded symbols: " + string.Join(", ", phonemeSymbols.Keys));
+                        Log.Information("Loaded symbols: " + string.Join(", ", phonemeSymbols.Keys));
                     } catch (Exception e) {
                         Log.Error(e, $"Failed to load {dictionaryPath}");
                     }
