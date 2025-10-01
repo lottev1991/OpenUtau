@@ -42,7 +42,7 @@ class G2pTrainer():
         self.optimizer = Adam(model.parameters(), lr=lr,
                               betas=(0.9, 0.98), eps=1e-9)
         self.scheduler = ExponentialLR(
-            self.optimizer, gamma=gamma, verbose=True)
+            self.optimizer, gamma=gamma)
 
         valid_set_size = len(dataset) // 10
         train_set_size = len(dataset) - valid_set_size
@@ -127,10 +127,10 @@ class G2pTrainer():
         return losses / count
 
     def _save_state_dic(self, name):
-        torch.save(self.model.state_dict(), 'g2p-{}.ptsd'.format(name))
+        torch.save(self.model.state_dict(), 'g2p/it_it_fix/g2p-{}.ptsd'.format(name))
 
     def _load_state_dic(self, name):
-        self.model.load_state_dict(torch.load('g2p-{}.ptsd'.format(name)))
+        self.model.load_state_dict(torch.load('g2p/it_it_fix/g2p-{}.ptsd'.format(name)))
 
     def _preview(self, entry):
         word, pron = entry

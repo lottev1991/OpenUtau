@@ -20,7 +20,7 @@ def export(trainer, model_path, onnx_path):
     greedy.export(onnx_path)
 
     print('testing...')
-    trainer.test('test_log.txt')
+    trainer.test('g2p/it_it_fix/test_log.txt')
 
 
 if __name__ == '__main__':
@@ -31,11 +31,11 @@ if __name__ == '__main__':
     from g2p.model import GreedyG2p
 
     # The config specifying grapheme set and phoneme set.
-    cfg = OmegaConf.load('g2p/en_us/cfg.yaml')
+    cfg = OmegaConf.load('g2p/it_it_fix/cfg.yaml')
 
     # Loads the dataset.
     # Note that SphinxDataset may not work for your dictionary format.
-    dataset = SphinxDataset('g2p/en_us/cmudict-0.7b', cfg,
+    dataset = SphinxDataset('g2p/it_it_fix/dict.txt', cfg,
                             comment_prefix=';;;',
                             # "RECORDS(1)" -> "RECORDS"
                             remove_word_digits=True,
@@ -45,12 +45,14 @@ if __name__ == '__main__':
     # Create trainer. You may need to adjust the batch size and epochs.
     trainer = G2pTrainer(
         device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
-        loss_device=torch.device("cpu"),
+        loss_device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
         model=hydra.utils.instantiate(cfg),
         dataset=dataset,
-        batch_size=256,
-        epochs=10)
+        batch_size=50,
+        #grad_clip=0.5,
+        #lr=0.005,
+        epochs=300)
 
     train(trainer)
 
-    export(trainer, 'g2p-best.ptsd', 'g2p.onnx')
+    export(trainer, 'g2p/it_it_fix/g2p-best.ptsd', 'g2p/it_it_fix/g2p.onnx')
