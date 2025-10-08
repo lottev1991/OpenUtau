@@ -341,7 +341,7 @@ appcast.*.xml
 .vscode/
 Microsoft.AI.DirectML
 /py
-/py
+/py/
 /py/g2p
 py/g2p/requirements.txt
 py/g2p/train.py
