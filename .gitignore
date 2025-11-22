@@ -346,5 +346,3 @@ Microsoft.AI.DirectML
 py/g2p/requirements.txt
 py/g2p/train.py
 py/g2p/trainer.py
-/py/g2p
-/py
