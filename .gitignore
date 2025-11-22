@@ -340,9 +340,12 @@ appcast.*.xml
 *.tar.gz
 .vscode/
 Microsoft.AI.DirectML
+<<<<<<< HEAD
 /py
 /py/
 /py/g2p
 py/g2p/requirements.txt
 py/g2p/train.py
 py/g2p/trainer.py
+=======
+>>>>>>> parent of 83374b8a (test)
