@@ -15,7 +15,6 @@ from torchaudio.transforms import RNNTLoss
 UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
 special_symbols = ['<unk>', '<pad>', '<bos>', '<eos>']
 
-
 class G2pTrainer():
     def __init__(self,
                  device: torch.device,
@@ -127,10 +126,10 @@ class G2pTrainer():
         return losses / count
 
     def _save_state_dic(self, name):
-        torch.save(self.model.state_dict(), 'g2p/it_it_fix/g2p-{}.ptsd'.format(name))
+        torch.save(self.model.state_dict(), 'g2p/id_id/g2p-{}.ptsd'.format(name))
 
     def _load_state_dic(self, name):
-        self.model.load_state_dict(torch.load('g2p/it_it_fix/g2p-{}.ptsd'.format(name)))
+        self.model.load_state_dict(torch.load('g2p/id_id/g2p-{}.ptsd'.format(name)))
 
     def _preview(self, entry):
         word, pron = entry
