@@ -3,5 +3,6 @@
 Type=Application
 Name=OpenUtau
 Comment=Singing voice synthesizer
-Icon=OpenUtau
+Icon=OpenUtau.png
 Categories=AudioVideo;Audio;Midi
+StartupWMClass=OpenUtau

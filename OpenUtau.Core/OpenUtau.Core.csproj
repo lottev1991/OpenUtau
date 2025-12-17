@@ -80,6 +80,11 @@
       <LastGenOutput>VogenRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Pinyin">
+      <HintPath>..\..\csharp-pinyin\Pinyin\bin\Debug\netstandard2.1\Pinyin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
     <DefineConstants>WINDOWS</DefineConstants>
   </PropertyGroup>
