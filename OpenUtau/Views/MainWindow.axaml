@@ -51,8 +51,8 @@
             <MenuItem Header="{DynamicResource menu.file.openexportlocation}" Click="OnMenuOpenProjectLocation"/>
           </MenuItem>
           <MenuItem Header="{DynamicResource menu.edit}" IsEnabled="{Binding Page}">
-            <MenuItem Header="{DynamicResource menu.edit.undo}" InputGesture="Ctrl+Z" Command="{Binding Undo}"/>
-            <MenuItem Header="{DynamicResource menu.edit.redo}" InputGesture="Ctrl+Y" Command="{Binding Redo}"/>
+            <MenuItem Header="{Binding UndoText}" InputGesture="Ctrl+Z" Command="{Binding Undo}" IsEnabled="{Binding CanUndo}"/>
+            <MenuItem Header="{Binding RedoText}" InputGesture="Ctrl+Y" Command="{Binding Redo}" IsEnabled="{Binding CanRedo}"/>
           </MenuItem>
           <MenuItem Header="{DynamicResource menu.project}" IsEnabled="{Binding Page}">
             <MenuItem Header="{DynamicResource menu.project.expressions}" Click="OnMenuExpressionss"/>
@@ -213,9 +213,10 @@
           <Grid.RowDefinitions>
             <RowDefinition Height="24"/>
             <RowDefinition Height="24"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"
+            <RowDefinition Height="3*"
+                           MinHeight="{Binding PianoRollMinHeight}"
                            MaxHeight="{Binding PianoRollMaxHeight}"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="4"/>
@@ -394,7 +395,7 @@
           </Border>
           <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Background="{DynamicResource SystemControlBackgroundAltHighBrush}" Focusable="False" Cursor="SizeNorthSouth" IsVisible="{Binding ShowPianoRoll}"/>
-          <ContentControl Name="PianoRollContainer" Grid.Row="4" Grid.ColumnSpan="3"/>
+          <ContentControl Name="PianoRollContainer" Grid.Row="4" Grid.ColumnSpan="3" Margin="0,-5" Padding="0,5"/>
           <TextBlock Grid.Row="5" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Height="20" Margin="4,4,4,0" Text="{Binding ProgressText}"/>
           <ProgressBar Grid.Row="6" Grid.ColumnSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Value="{Binding Progress}"/>
         </Grid>
